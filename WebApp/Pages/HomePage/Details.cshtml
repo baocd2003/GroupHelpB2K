@@ -1,0 +1,59 @@
+﻿@page
+@model WebApp.Pages.HomePage.DetailsModel
+@{
+    Layout = "_Layout";
+}
+
+<h1>Details</h1>
+
+<div class="container-fluid py-5 mt-5">
+    <div class="container py-5">
+        <div class="row g-4 mb-5">
+            <div class="col-lg-8 col-xl-9">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <img src="@Model.Book.ImagePath" class="img-fluid rounded" alt="Image">
+                    </div>
+                    <div class="col-lg-6">
+                        <h4 class="fw-bold mb-3">@Model.Book.Title</h4>
+                        <p class="mb-3">Loại sách : @Model.Book.Category.CategoryName</p>
+                        <p class="mb-3">Nhà phát hành : @Model.Book.Publisher.PublisherName</p>
+                        <p class="mb-3">Ngày phát hành : @Model.Book.PublishDate</p>
+                        <h5 class="fw-bold mb-3">VND @Model.Book.Price</h5>
+                        <p class="mb-4">@Model.Book.Description</p>
+                        <a asp-page="./AddCart" asp-route-id="@Model.Book.BookId" asp-page-handler="buynowindetails" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                @if (Model.UserComment == null)
+                {
+                    <h3>Bạn muốn để lại cảm nghĩ?</h3>
+                    <form asp-page-handler="comment" method="post">
+                        <input type="text" name="comment" />
+                        <input type="hidden" name="bookId" value="@Model.Book.BookId" />
+                        <input type="submit" class="btn btn-primary" value="Đăng" />
+                    </form>
+                } else
+                {
+                    <h3>Comment của bạn:</h3>
+                    <p class="fw-light">@Model.UserComment.Timestamp</p>
+                    <p>@Model.UserComment.CommentContent</p>
+                }
+            </div>
+            <div class="col-12">
+                @foreach (var item in Model.OtherComments)
+                {
+                    <div class="row">
+                        <h5>@item.User.UserName</h5>
+                        <p class="fw-light">@item.Timestamp</p>
+                        <p>@item.CommentContent</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

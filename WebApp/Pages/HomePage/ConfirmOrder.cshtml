@@ -1,0 +1,107 @@
+﻿@page
+@model WebApp.Pages.HomePage.ConfirmOrderModel
+
+@{
+    ViewData["Title"] = "ConfirmOrder";
+}
+
+<h1>ConfirmOrder</h1>
+
+@{
+    Layout = "_Layout";
+}
+
+<hr />
+<div class="container-fluid py-5">
+    @if (HttpContext.Session.GetString("cart") != null)
+    {
+        <div class="container py-5">
+            <h1 class="mb-4">Billing details</h1>
+            <div class="row g-5">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Sản phẩm</th>
+                                    <th scope="col">Tác giả</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Tổng tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.OrderDetail)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center mt-2">
+                                                <img src="@item.Book.ImagePath" class="img-fluid" style="width: 90px; height: 90px;" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="py-5">@item.Book.Title</td>
+                                        <td class="py-5">@item.Book.Author</td>
+                                        <td class="py-5">@item.Book.Price</td>
+                                        <td class="py-5">@item.Quantity</td>
+                                        <td class="py-5">@item.Price</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td scope="row">
+                                    </td>
+                                    <td>
+                                        <p class="mb-0 text-dark py-3">Tổng số tiền</p>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="py-3 border-bottom border-top">
+                                            <p class="mb-0 text-dark">@Model.TotalMoney</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <form method="post">
+                    <div class="col-12">
+                        <div class="form-item">
+                            <label class="form-label my-3">Địa chỉ giao hàng <sup>*</sup></label>
+                            <input type="text" class="form-control" asp-for="Order.DeliveryAddress">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Số điện thoại người nhận<sup>*</sup></label>
+                            <input type="tel" class="form-control" asp-for="Order.PhoneNumber">
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Ghi chú (tùy chọn)</label>
+                            <input asp-for="Order.Note" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                        <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Đặt hàng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h1>Bạn chưa có sản phẩm nào trong giỏ hàng</h1>
+    }
+
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

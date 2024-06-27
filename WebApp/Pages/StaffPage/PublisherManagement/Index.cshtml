@@ -1,0 +1,52 @@
+﻿@page
+@model WebApp.Pages.StaffPage.PublisherManagement.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    Layout = "_LayoutStaff";
+}
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+@if (Model.PublisherList.Count == 0)
+{
+    <p>Don't have any publisher right now'</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PublisherList[0].PublisherName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PublisherList[0].PublisherDescription)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PublisherList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PublisherName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PublisherDescription)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.PublisherId"><i class="fas fa-edit"></i></a> |
+@*                         <a asp-page="./Details" asp-route-id="@item.PublisherId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.PublisherId">Delete</a> *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
