@@ -1,0 +1,199 @@
+﻿@page
+@model WebApp.Pages.HomePage.IndexModel
+@{
+    Layout = "_Layout";
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Fruitables - Vegetable Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/css/style.css" rel="stylesheet">
+</head>
+<body>
+    @{
+        string countCart = HttpContext.Session.GetString("size") != null ? HttpContext.Session.GetString("size") : "0";
+    }
+    <header>
+        <!-- Navbar start -->
+        <div class="container-fluid fixed-top">
+            <div class="container topbar bg-primary d-none d-lg-block">
+                <div class="d-flex justify-content-between">
+                    <div class="top-info ps-2">
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
+                    </div>
+                    <div class="top-link pe-2">
+                        <a class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
+                    </div>
+                </div>
+            </div>
+            <div class="container px-0">
+                <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                    <a href="/HomePage/Index" class="navbar-brand"><h1 class="text-primary display-6">Tiệm sách 3W</h1></a>
+                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="fa fa-bars text-primary"></span>
+                    </button>
+                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                        <div class="navbar-nav mx-auto">
+                            <a href="/HomePage/Index" class="nav-item nav-link active">Trang chủ</a>
+                            <div class="nav-item dropdown">
+                            </div>
+                            <a href="/HomePage/Index" class="nav-item nav-link">Danh mục</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Sách theo nhà xuất bản </a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    @foreach (var item in Model.Publishers)
+                                    {
+                                        <a asp-route-id="@item.PublisherId" asp-page-handler="booksByPublisher" asp-page="./Index" class="dropdown-item">@item.PublisherName</a>
+                                    }
+                                </div>
+                            </div>
+                            <a asp-page="ViewAllBooks" asp-page-handler="viewWaitingBooks" class="nav-item nav-link">Sách chờ nhập</a>
+                        </div>
+                        <div class="d-flex m-3 me-0">
+                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            <a asp-page="/HomePage/ViewCart" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x"></i>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">@countCart</span>
+                            </a>
+                            @if (HttpContext.Session.GetString("Role") != null)
+                            {
+                                <a href="#" class="my-auto">
+                                    <i class="fas fa-user fa-2x"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-page="/Login" class="my-auto">
+                                    Đăng nhập
+                                </a>
+                            }
+
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Navbar End -->
+    </header>
+    <!-- Hero Start -->
+    <!-- Hero End -->
+
+        @if (@TempData["ErrorMessage"] != null)
+        {
+            <h1>@TempData["ErrorMessage"]</h1>
+        }
+        <div class="container-fluid vesitable py-5">
+
+        </div>
+        <div class="container-fluid fruite py-5">
+            <div class="container py-5">
+                <div class="tab-class text-center">
+                    <div class="row g-4">
+                        <div class="col-lg-4 text-start">
+                            <h1>Sách bán chạy</h1>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane fade show p-0 active">
+                            <div class="row g-4">
+                                <div class="col-lg-12">
+                                    <div class="row g-4">
+                                        @if (Model.Book.Count == 0)
+                                        {
+                                            <h1>Chua co sach nhap ve</h1>
+                                        }
+                                        else
+                                        {
+                                            @foreach (var item in Model.Book)
+                                            {
+                                                <div class="col-md-6 col-lg-4 col-xl-3">
+                                                    <div class="rounded position-relative fruite-item">
+                                                        <div class="fruite-img" style="height:400px">
+                                                            <a asp-page="./Details" asp-route-id="@item.BookId"><img src="@item.ImagePath" style="max-height:100%" class="img-fluid w-100 h-auto rounded-top" alt=""></a>
+                                                        </div>
+                                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">@item.Category.CategoryName</div>
+                                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                            <div style="height:130px">
+                                                                <h4>@item.Title</h4>
+                                                                <p>@item.Description</p>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                                                <p class="text-dark fs-5 fw-bold mb-0">VND @item.Price</p>
+                                                                @if (@item.Quantity == 0)
+                                                                {
+                                                                    <a class="btn border border-secondary rounded-pill px-3 text-primary">Chờ nhập hàng</a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a asp-page="./AddCart" asp-route-id="@item.BookId" asp-page-handler="buynow" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>Mua hàng</a>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="pagination">
+                        @for (var i = 1; i <= Model.TotalPage; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a asp-page="/HomePage/Index" asp-route-currentpage="@i" class="page-link">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+</body>
+</html>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo(0, scrollpos);
+    });
+
+    window.onbeforeunload = function (e) {
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/easing/easing.min.js"></script>
+<script src="~/lib/waypoints/waypoints.min.js"></script>
+<script src="~/lib/lightbox/js/lightbox.min.js"></script>
+<script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="~/js/main.js"></script>
+
+

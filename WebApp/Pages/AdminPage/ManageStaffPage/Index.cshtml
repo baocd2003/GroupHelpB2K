@@ -1,0 +1,60 @@
+﻿@page
+@model WebApp.Pages.AdminPage.ManageStaffPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].AccountStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User[0].Role)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.User) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |
+                    @if (item.AccountStatus == BusinessObjects.AccountStatus.Active)
+                    {
+                        <a asp-page="./Delete" asp-route-id="@item.UserId">Ban</a>
+                    }
+                    else
+                    {
+                        <a asp-page="./UnBan" asp-route-id="@item.UserId">UnBan</a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

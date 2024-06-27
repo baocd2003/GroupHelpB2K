@@ -1,0 +1,111 @@
+﻿@page
+@model WebApp.Pages.StaffPage.BookManagement.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+@{
+    Layout = "_LayoutStaff";
+}
+
+<h1>Create</h1>
+
+<h4>Book</h4>
+<hr />
+<div class="container py-5">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="row g-5">
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <div class="form-group">
+                    <label asp-for="Book.Title" class="control-label"></label>
+                    <input asp-for="Book.Title" class="form-control" required />
+                    <span asp-validation-for="Book.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Book.ImagePath" class="control-label"></label>
+                    <div class="row">
+                        <img src="" id="demoImage" style="width:200px;height:200px" />
+                        <input type="file" name="Image" id="imagePath" class="form-control" accept="image/*" required>
+                    </div>              
+                    <input id="image" asp-for="Book.ImagePath" type="hidden"/>
+                    <span asp-validation-for="ImagePath" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Book.Author" class="control-label"></label>
+                    <input asp-for="Book.Author" class="form-control" required />
+                    <span asp-validation-for="Book.Author" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Book.Description" class="control-label"></label>
+                    <input asp-for="Book.Description" class="form-control" required />
+                    <span asp-validation-for="Book.Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-6 col-xl-5">
+                <div class="form-group">
+                    <label asp-for="Book.PublishDate" class="control-label"></label>
+                    <input asp-for="Book.PublishDate" class="form-control" required />
+                    <span asp-validation-for="Book.PublishDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Book.Price" class="control-label"></label>
+                    <input asp-for="Book.Price" class="form-control" required />
+                    <span asp-validation-for="Book.Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Book.Quantity" class="control-label"></label>
+                    <input asp-for="Book.Quantity" class="form-control" required />
+                    <span asp-validation-for="Book.Quantity" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Book.IsAvailable" /> @Html.DisplayNameFor(model => model.Book.IsAvailable)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Book.CategoryId" class="control-label"></label>
+                    <select asp-for="Book.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Book.PublisherId" class="control-label"></label>
+                    <select asp-for="Book.PublisherId" class="form-control" asp-items="ViewBag.PublisherId"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Tạo sách" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+    
+</div>
+
+
+<div>
+    <a asp-page="Index">Quay lại</a>
+</div>
+
+
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+    <script>
+        const imageInput = document.getElementById("imagePath");
+        const imagePath = document.getElementById("image");
+        const demoImage = document.getElementById("demoImage");
+        imageInput.addEventListener('change', (event) => {
+            if (event.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const base64Data = e.target.result;
+                    image.value = base64Data;
+                    demoImage.src = base64Data ;
+                    console.log(base64Data);
+                }
+                console.log(event.target.files[0]);
+            reader.readAsDataURL(event.target.files[0]);
+            }
+        })
+    </script>

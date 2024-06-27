@@ -1,0 +1,102 @@
+﻿@page
+@model WebApp.Pages.StaffPage.BookManagement.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    Layout = "_LayoutStaff";
+}
+<h1>Index</h1>
+
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <p>
+            <a asp-page="Create">Tạo sách</a>
+        </p>
+        <div class="col-lg-8 text-end">
+            <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                <li class="nav-item">
+                    <a type="button" asp-page-handler="viewAll" class="d-flex m-2 py-2 bg-light rounded-pill">
+                        <span class="text-dark" style="width: 130px;">Tất cả</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a type="button" asp-page-handler="viewOutQuan" class="d-flex py-2 m-2 bg-light rounded-pill">
+                        <span class="text-dark" style="width: 130px;">Chờ nhập</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a type="button"  asp-page-handler="viewOutAvai" class="d-flex m-2 py-2 bg-light rounded-pill">
+                        <span class="text-dark" style="width: 130px;">Hết hạn</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Sản phẩm</th>
+                        <th scope="col">Tác giả</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Nhà xuất bản</th>
+                        <th scope="col">Thể loại</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tbody>
+                        @foreach (var item in Model.Book)
+                        {
+                        <tr>
+                            <th scope="row">
+                                <div class="d-flex align-items-center">
+                                    <img src="@item.ImagePath" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
+                                </div>
+                            </th>
+                            <td>
+                                <p class="mb-0 mt-4">@item.Title</p>
+                            </td>
+                            <td>
+                                <p class="mb-0 mt-4">@item.Author</p>
+                            </td>
+                            <td>
+                                <p class="mb-0 mt-4">@item.Price</p>
+                            </td>
+                            <td>
+                                <p class="mb-0 mt-4">@item.Quantity</p>
+                            </td>
+                            <td>
+                                <p class="mb-0 mt-4">@item.Publisher.PublisherName</p>
+                            </td>
+                            <td>
+                                <p class="mb-0 mt-4">@item.Category.CategoryName</p>
+                            </td>
+                            <td>
+                                <a type="button" asp-route-id="@item.BookId" asp-page="./Edit" ><i class="fas fa-edit"></i></a>
+                                <a type="button" asp-route-id="@item.BookId" asp-page="./Delete" ><i class="far fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        }
+                </tbody>
+            </table>
+
+            <ul class="pagination">
+                @for (var i = 1; i <= Model.TotalPage; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a asp-page="/StaffPage/BookManagement/Index" asp-route-currentpage="@i" class="page-link">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+        
+    </div>
+
+
+
